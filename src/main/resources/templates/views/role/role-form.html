@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head (#{msg.role-list.title})"></head>
+
+<body class="d-flex flex-column h-100">
+
+<header th:replace="fragments/header :: header"></header>
+
+<!-- Contenido dinámico -->
+<main class="form-page">
+    <div class="form-card">
+
+        <h1 th:text="${role.id} == null ? #{msg.role-form.add} : #{msg.role-form.edit}"></h1>
+
+        <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+        <form th:action="${role.id} == null ? @{/roles/insert} : @{/roles/update}"
+              th:object="${role}" method="post" class="mt-3">
+
+            <input type="hidden" th:field="*{id}" />
+
+            <div class="mb-3">
+                <label for="name" class="form-label" th:text="#{msg.role-form.name}"></label>
+                <input type="text" id="name" th:field="*{name}" class="form-control" />
+                <div th:if="${#fields.hasErrors('name')}" class="text-danger" th:errors="*{name}"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary"
+                    th:text="${role.id} == null ? #{msg.role-form.create} : #{msg.role-form.update}"></button>
+
+            <a th:href="@{/roles}" class="btn btn-secondary" th:text="#{msg.role-form.returnback}"></a>
+        </form>
+
+    </div>
+</main>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+
+<div th:replace="fragments/scripts :: scripts"></div>
+
+</body>
+</html>

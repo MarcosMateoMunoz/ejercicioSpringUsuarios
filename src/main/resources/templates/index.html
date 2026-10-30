@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head (#{msg.index.title})"></head>
+
+<body class="d-flex flex-column h-100">
+
+<header th:replace="fragments/header :: header"></header>
+
+<!-- Contenido dinámico -->
+<main>
+    <h1 th:text="#{msg.index.title}"></h1>
+    <p class="lead" th:text="#{msg.index.subtitle}"></p>
+    <div class="d-flex gap-2 justify-content-center">
+        <a th:href="@{/users}" class="btn btn-dark" th:text="#{msg.nav.users}"></a>
+        <a th:href="@{/roles}" class="btn btn-dark" th:text="#{msg.nav.roles}"></a>
+    </div>
+</main>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+
+<div th:replace="fragments/scripts :: scripts"></div>
+
+</body>
+</html>

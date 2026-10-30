@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head (#{msg.user-list.title})"></head>
+
+<body class="d-flex flex-column h-100">
+
+<header th:replace="fragments/header :: header"></header>
+
+<!-- Contenido dinámico -->
+<main class="form-page">
+    <div class="form-card">
+
+        <h1 th:text="${user.id} == null ? #{msg.user-form.add} : #{msg.user-form.edit}"></h1>
+
+        <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+        <form th:action="${user.id} == null ? @{/users/insert} : @{/users/update}"
+              th:object="${user}" method="post" class="mt-3">
+
+            <input type="hidden" th:field="*{id}" />
+
+            <!-- Nombre -->
+            <div class="mb-3">
+                <label for="firstName" class="form-label" th:text="#{msg.user-form.firstName}"></label>
+                <input type="text" id="firstName" th:field="*{firstName}" class="form-control" />
+                <div th:if="${#fields.hasErrors('firstName')}" class="text-danger" th:errors="*{firstName}"></div>
+            </div>
+
+            <!-- Apellidos -->
+            <div class="mb-3">
+                <label for="lastName" class="form-label" th:text="#{msg.user-form.lastName}"></label>
+                <input type="text" id="lastName" th:field="*{lastName}" class="form-control" />
+                <div th:if="${#fields.hasErrors('lastName')}" class="text-danger" th:errors="*{lastName}"></div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+                <label for="email" class="form-label" th:text="#{msg.user-form.email}"></label>
+                <input type="text" id="email" th:field="*{email}" class="form-control" />
+                <div th:if="${#fields.hasErrors('email')}" class="text-danger" th:errors="*{email}"></div>
+            </div>
+
+            <!-- Roles (selección múltiple con casillas) -->
+            <div class="mb-3">
+                <label class="form-label d-block" th:text="#{msg.user-form.roles}"></label>
+                <div class="form-check form-check-inline" th:each="role : ${listRoles}">
+                    <input type="checkbox" class="form-check-input"
+                           th:field="*{roleIds}" th:value="${role.id}" />
+                    <label class="form-check-label"
+                           th:for="${#ids.prev('roleIds')}" th:text="${role.name}"></label>
+                </div>
+                <div th:if="${#fields.hasErrors('roleIds')}" class="text-danger" th:errors="*{roleIds}"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary"
+                    th:text="${user.id} == null ? #{msg.user-form.create} : #{msg.user-form.update}"></button>
+
+            <a th:href="@{/users}" class="btn btn-secondary" th:text="#{msg.user-form.returnback}"></a>
+        </form>
+
+    </div>
+</main>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+
+<div th:replace="fragments/scripts :: scripts"></div>
+
+</body>
+</html>

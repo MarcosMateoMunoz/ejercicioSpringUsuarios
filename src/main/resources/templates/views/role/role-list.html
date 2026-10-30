@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head (#{msg.role-list.title})"></head>
+
+<body class="d-flex flex-column h-100">
+
+<header th:replace="fragments/header :: header"></header>
+
+<!-- Contenido dinámico -->
+<main class="list-page">
+    <div class="list-card">
+
+        <h1 th:text="#{msg.role-list.title}"></h1>
+
+        <a th:href="@{/roles/new}" class="btn btn-success" th:text="#{msg.role-list.add}"></a>
+
+        <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+        <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+        <table class="table table-bordered table-striped mt-3">
+            <thead>
+            <tr>
+                <th th:text="#{msg.role-list.id}"></th>
+                <th th:text="#{msg.role-list.name}"></th>
+                <th th:text="#{msg.role-list.actions}"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="role : ${listRoles}">
+                <td th:text="${role.id}"></td>
+                <td th:text="${role.name}"></td>
+                <td>
+                    <a th:href="@{/roles/edit(id=${role.id})}"
+                       class="btn btn-primary btn-sm"
+                       th:text="#{msg.role-list.edit}"></a>
+
+                    <form th:action="@{/roles/delete}" method="post" class="d-inline">
+                        <input type="hidden" name="id" th:value="${role.id}"/>
+                        <button type="submit"
+                                class="btn btn-danger btn-sm"
+                                th:text="#{msg.role-list.delete}"
+                                th:onclick="|return confirm('#{msg.role-list.confirm}');|"></button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <a th:href="@{/}" class="btn btn-secondary" th:text="#{msg.role-list.back}"></a>
+
+    </div>
+</main>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+
+<div th:replace="fragments/scripts :: scripts"></div>
+
+</body>
+</html>
